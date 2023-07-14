@@ -49,7 +49,7 @@ impl HashChainTranscript {
         self.append_message(label, &encode_u64_as_u256_le(x));
     }
 
-    /// Squeeze challenge bytes out of the transcript state
+    /// Squeeze 32 challenge bytes out of the transcript state
     pub fn challenge_bytes(&mut self, label: &'static [u8], dest: &mut [u8]) {
         let data: Vec<u8> = HashChainTranscript::pad_label(label)
             .iter()
@@ -57,9 +57,11 @@ impl HashChainTranscript {
             .cloned()
             .collect();
 
-        keccak256(&data, self.state.as_mut());
+        let mut output = [0u8; 32];
+        keccak256(&data, &mut output);
 
-        keccak256(&self.state, dest)
+        self.state.copy_from_slice(&output);
+        dest.copy_from_slice(&output);
     }
 
     /// Pad a label to 32 bytes in a manner consistent with Cairo.
@@ -75,13 +77,12 @@ impl HashChainTranscript {
         );
         let mut padded_label = [0u8; 32];
         padded_label[32 - label.len()..].copy_from_slice(label);
-        padded_label = padded_label
+        padded_label
             .iter()
             .rev()
             .cloned()
             .collect::<Vec<u8>>()
             .try_into()
-            .unwrap();
-        padded_label
+            .unwrap()
     }
 }
