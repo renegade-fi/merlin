@@ -16,9 +16,12 @@ please file an issue!
 );
 
 mod constants;
+mod hash_chain_transcript;
 mod strobe;
 mod transcript;
 
 pub use crate::transcript::Transcript;
 pub use crate::transcript::TranscriptRng;
 pub use crate::transcript::TranscriptRngBuilder;
+
+pub use crate::hash_chain_transcript::HashChainTranscript;
