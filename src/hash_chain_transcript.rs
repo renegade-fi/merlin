@@ -20,7 +20,7 @@ fn keccak256(input: &[u8], dest: &mut [u8]) {
 }
 
 pub struct HashChainTranscript {
-    pub state: [u8; 32],
+    state: [u8; 32],
 }
 
 impl HashChainTranscript {
