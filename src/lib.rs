@@ -24,4 +24,4 @@ pub use crate::transcript::Transcript;
 pub use crate::transcript::TranscriptRng;
 pub use crate::transcript::TranscriptRngBuilder;
 
-pub use crate::hash_chain_transcript::HashChainTranscript;
+pub use crate::hash_chain_transcript::{keccak256, HashChainTranscript};

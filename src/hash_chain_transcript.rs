@@ -13,7 +13,7 @@ fn encode_u64_as_u256_le(x: u64) -> [u8; 32] {
 }
 
 /// Compute the Keccak256 hash of `input` and write it to `dest`
-fn keccak256(input: &[u8], dest: &mut [u8]) {
+pub fn keccak256(input: &[u8], dest: &mut [u8]) {
     let mut hasher = Keccak::v256();
     hasher.update(input.as_ref());
     hasher.finalize(dest);
@@ -66,7 +66,7 @@ impl HashChainTranscript {
 
     /// Pad a label to 32 bytes in a manner consistent with Cairo.
     /// Panics if the label is longer than 32 bytes.
-    fn pad_label(label: &'static [u8]) -> [u8; 32] {
+    pub fn pad_label(label: &'static [u8]) -> [u8; 32] {
         // In Cairo, the label is stored as a big-endian u256, but is read
         // into the Keccak hash function in little-endian (i.e., reverse) byte order.
         // This function replicates that by left-padding the label w/ zeros
@@ -86,3 +86,5 @@ impl HashChainTranscript {
             .unwrap()
     }
 }
+
+// TODO: Maybe impl `TranscriptRngBuilder` for `HashChainTranscript`?
